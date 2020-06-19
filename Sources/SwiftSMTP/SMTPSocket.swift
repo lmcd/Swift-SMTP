@@ -48,8 +48,8 @@ struct SMTPSocket {
                 throw SMTPError.requiredSTARTTLS
             }
         }
-        let authMethod = try getAuthMethod(authMethods: authMethods, serverOptions: serverOptions, hostname: hostname)
-        try login(authMethod: authMethod, email: email, password: password)
+        //let authMethod = try getAuthMethod(authMethods: authMethods, serverOptions: serverOptions, hostname: hostname)
+        //try login(authMethod: authMethod, email: email, password: password)
     }
 
     func write(_ text: String) throws {
