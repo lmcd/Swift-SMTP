@@ -16,6 +16,16 @@
 
 import Foundation
 
+extension String {
+    func components(withMaxLength length: Int) -> [String] {
+        return stride(from: 0, to: self.count, by: length).map {
+            let start = self.index(self.startIndex, offsetBy: $0)
+            let end = self.index(start, offsetBy: length, limitedBy: self.endIndex) ?? self.endIndex
+            return String(self[start..<end])
+        }
+    }
+}
+
 // Used to send the content of an email--headers, text, and attachments.
 // Should only be invoked after sending the `DATA` command to the server.
 // The email is not actually sent until we have indicated that we are done sending its contents with a `CRLF CRLF`.
@@ -186,7 +196,10 @@ extension DataSender {
             }
         #endif
 
-        let encodedHTML = html.base64Encoded
+
+        var encodedHTML = html.base64Encoded
+        encodedHTML = encodedHTML.components(withMaxLength: 76).joined(separator: "\r\n")
+
         try send(encodedHTML)
 
         #if os(macOS)
